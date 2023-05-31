@@ -1,0 +1,60 @@
+package SoftragonsSystem
+
+-- System Components
+system SoftragonsSystem
+features
+    Sensors: out event data port;
+    Actuators: in event data port;
+    AnalysisEngine: event data port;
+    UserInterface: event data port;
+end SoftragonsSystem;
+
+-- Sensor Component
+system Sensor
+features
+    SensorData: out event data port;
+end Sensor;
+
+-- Actuator Component
+system Actuator
+features
+    ActuatorData: in event data port;
+end Actuator;
+
+-- Analysis Engine Component
+system AnalysisEngine
+features
+    SensorData: in event data port;
+    ActuatorData: out event data port;
+end AnalysisEngine;
+
+-- User Interface Component
+system UserInterface
+features
+    AnalysisResults: in event data port;
+    UserInput: out event data port;
+end UserInterface;
+
+-- Connections
+system Connection1
+connections
+    port SoftragonsSystem.Sensors -> Sensor.SensorData;
+    port Sensor.SensorData -> SoftragonsSystem.AnalysisEngine;
+end Connection1;
+
+system Connection2
+connections
+    port SoftragonsSystem.Actuators <- Actuator.ActuatorData;
+end Connection2;
+
+system Connection3
+connections
+    port SoftragonsSystem.AnalysisEngine <- AnalysisEngine.SensorData;
+    port SoftragonsSystem.AnalysisEngine -> AnalysisEngine.ActuatorData;
+end Connection3;
+
+system Connection4
+connections
+    port SoftragonsSystem.UserInterface <- UserInterface.AnalysisResults;
+    port SoftragonsSystem.UserInterface -> UserInterface.UserInput;
+end Connection4;
